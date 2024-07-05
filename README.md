@@ -20,3 +20,11 @@ E-commerce application for buying and selling clothes
 ### `npm install multer`
 
 ### `npm install cors`
+
+*In the admin field*
+
+### `npm create vite@latest .`
+
+### `select React`
+
+### `select JavaScript`
