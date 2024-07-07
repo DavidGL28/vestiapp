@@ -28,3 +28,7 @@ E-commerce application for buying and selling clothes
 ### `select React`
 
 ### `select JavaScript`
+
+### `npm install`
+
+### `npm install react-router-dom`
