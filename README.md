@@ -21,6 +21,8 @@ E-commerce application for buying and selling clothes
 
 ### `npm install cors`
 
+### `npm install dotenv`
+
 *In the admin field*
 
 ### `npm create vite@latest .`

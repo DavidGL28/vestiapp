@@ -1,4 +1,7 @@
-const port = 4000
+const dotenv = require('dotenv')
+dotenv.config()
+
+const port = process.env.PORT || 4000
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
@@ -11,8 +14,9 @@ const { type } = require("os")
 app.use(express.json())
 app.use(cors())
 
-// Database Connection With MongoDB
-mongoose.connect("mongodb+srv://cdavidglima:davidkate281202@cluster0.o3bm5fr.mongodb.net/vestiapp")
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Conectado a MongoDB"))
+    .catch((error) => console.log("Error al conectarse a MongoDB:", error));
 
 // API Creation
 
