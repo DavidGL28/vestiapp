@@ -25,7 +25,7 @@ const Navbar = () => {
       </div>
       <img className='nav-dropdown' onClick={dropdown_toggle} src={nav_dropdown} alt="" />
       <ul ref={menuRef} className="nav-menu">
-        <li onClick={()=>{setMenu("shop")}}><Link style={{textDecoration: 'none'}} to='/'><p>Tienda</p></Link>{menu==="shop"?<hr/>:<></>}</li>
+        <li onClick={()=>{setMenu("shop")}}><Link style={{textDecoration: 'none'}} to='/'><p>Inicio</p></Link>{menu==="shop"?<hr/>:<></>}</li>
         <li onClick={()=>{setMenu("hombres")}}><Link style={{textDecoration: 'none'}} to='/hombres'><p>Hombres</p></Link>{menu==="hombres"?<hr/>:<></>}</li>
         <li onClick={()=>{setMenu("mujeres")}}><Link style={{textDecoration: 'none'}} to='/mujeres'><p>Mujeres</p></Link>{menu==="mujeres"?<hr/>:<></>}</li>
         <li onClick={()=>{setMenu("niños")}}><Link style={{textDecoration: 'none'}} to='/niños'><p>Niños</p></Link>{menu==="niños"?<hr/>:<></>}</li>

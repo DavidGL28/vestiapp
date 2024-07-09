@@ -102,7 +102,7 @@ app.post('/addproduct',async (req,res)=>{
     })
     console.log(product)
     await product.save()
-    console.log("Saved")
+    console.log("Guardado")
     res.json({
         success: true,
         name: req.body.name,
@@ -113,7 +113,7 @@ app.post('/addproduct',async (req,res)=>{
 
 app.post('/removeproduct',async (req,res)=>{
     await Product.findOneAndDelete({id:req.body.id})
-    console.log("Removed")
+    console.log("Eliminado")
     res.json({
         success: true,
         name: req.body.name,
@@ -124,7 +124,7 @@ app.post('/removeproduct',async (req,res)=>{
 
 app.get('/allproducts',async (req,res)=>{
     let products = await Product.find({})
-    console.log("All Products Fetched")
+    console.log("Todos los productos obtenidos")
     res.send(products)
 })
 
@@ -205,9 +205,27 @@ app.post('/login',async (req,res)=>{
     }
 })
 
+// Creating endpoint for newcollection data 
+
+app.get('/newcollections', async (req,res)=>{
+    let products = await Product.find({})
+    let newcollection = products.slice(1).slice(-8)
+    console.log("Nuevos catalogos obtenidos")
+    res.send(newcollection)
+})
+
+// Creating endpoint for popular in woman section 
+
+app.get('/popularinwomen', async (req,res) =>{
+    let products = await Product.find({category:"mujeres"})
+    let popular_in_women = products.slice(0,4)
+    console.log("Tendencias en mujeres obtenidos")
+    res.send(popular_in_women)
+})
+
 app.listen(port,(error)=>{
     if (!error){
-        console.log("Server Running on Port "+port)
+        console.log("Server corriendo en puerto "+port)
     }
     else{
         console.log("Error : "+error)

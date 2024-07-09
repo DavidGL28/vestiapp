@@ -14,7 +14,7 @@
 }
 
 .new-collections hr{
-    width: 400px;
+    width: 250px;
     height: 6px;
     border-radius: 10px;
     background: #FF4040;    
@@ -32,7 +32,7 @@
         font-size: 40px;
     }
     .new-collections hr{
-        width: 315px;
+        width: 215px;
         height: 4px;
     }
     .collections{
@@ -46,7 +46,7 @@
         font-size: 30px;
     }
     .new-collections hr{
-        width: 245px;
+        width: 160px;
         height: 3px;
     }
     .collections{
@@ -63,7 +63,7 @@
         font-size: 20px;
     }
     .new-collections hr{
-        width: 160px;
+        width: 105px;
     }
     .collections{
         gap: 5px;
