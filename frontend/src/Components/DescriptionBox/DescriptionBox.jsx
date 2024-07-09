@@ -6,7 +6,6 @@ export const DescriptionBox = () => {
     <div className='descriptionbox'>
       <div className="descriptionbox-navigator">
         <div className="descriptionbox-nav-box">Descripcion</div>
-        <div className="descriptionbox-nav-box fade">Opiniones (122)</div>
       </div>
       <div className="descriptionbox-description">
         <p>Una tienda en línea es un sitio web donde los consumidores pueden comprar productos o servicios a través de internet. 
