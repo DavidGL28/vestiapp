@@ -9,7 +9,7 @@ const Navbar = () => {
        <div className="nav-logo">
             <img src={logo} alt=""/>
             <p>Vestiapp</p>
-            <p1>Panel de Gestion</p1>
+            <h1>Panel de Gestion</h1>
        </div>
        <img src={navProfile} className='nav-profile' alt="" />
     </div>

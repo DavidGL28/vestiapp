@@ -11,7 +11,7 @@ export const Hero = () => {
         <div>
             <p>nuevos</p>
             <p>catalogos</p>
-            <p1>nuevo look</p1>
+            <h1>nuevo look</h1>
         </div>
         <div className="hero-latest-btn">
             <div>Catalogos disponibles</div>
