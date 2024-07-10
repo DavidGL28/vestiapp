@@ -42,7 +42,7 @@ const upload = multer({storage:storage})
 
 app.use('/images', express.static(path.join(__dirname, 'upload/images')));
 
-app.post("/upload",upload.single('product'),(req,res)=>{
+app.post("/upload",upload.single('ropa'),(req,res)=>{
     res.json({
         success:1,
         image_url:`https://vestiapp-backend.onrender.com/images/${req.file.filename}`
