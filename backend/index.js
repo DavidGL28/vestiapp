@@ -271,11 +271,22 @@ app.post('/removefromcart',fetchUser, async (req,res)=>{
 
 // Creating endpoint to get cartdata
 
-app.post('/getcart',fetchUser,async (req,res)=>{
-    console.log("GetCart")
-    let userData = await Users.findOne({_id:req.user.id})
-    res.json(userData.cartData)
-})
+app.post('/getcart', fetchUser, async (req, res) => {
+    console.log("GetCart");
+    try {
+        let userData = await Users.findOne({_id: req.user.id});
+        
+        if (!userData) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+        
+        res.json(userData.cartData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al obtener el carrito" });
+    }
+});
+
 
 app.listen(port,(error)=>{
     if (!error){
