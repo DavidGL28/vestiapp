@@ -42,11 +42,18 @@ const upload = multer({storage:storage})
 
 // Creating Upload Endpoint for images 
 
-app.post("/upload",upload.single('ropa'),(req,res)=>{
+/*app.post("/upload",upload.single('ropa'),(req,res)=>{
     res.json({
         success:1,
-        image_url:`https://vestiapp-backend.onrender.com/images/${req.file.filename}`
+        image_url:`https://vestiapp-backend.onrender.com/images/${req.file.filename}`,
     })
+})*/
+
+app.post("/upload",upload.single('ropa'), async (req,res)=>{
+    console.log("req.body", req.body)
+    console.log("req.file", req.file)
+    req.file.buffer
+    res.send({})
 })
 
 // Schema for Creating Products
