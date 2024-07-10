@@ -25,7 +25,7 @@ const AddProduct = () => {
         let product = productDetails
 
         let formData = new FormData()
-        formData.append('product',image)
+        formData.append('ropa',image)
 
         await fetch('https://vestiapp-backend.onrender.com/upload',{
           method:'POST',
