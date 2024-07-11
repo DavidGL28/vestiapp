@@ -23,6 +23,8 @@ E-commerce application for buying and selling clothes
 
 ### `npm install dotenv`
 
+### `npm install @aws-sdk/client-s3`
+
 *In the admin field*
 
 ### `npm create vite@latest .`

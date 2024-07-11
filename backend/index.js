@@ -10,18 +10,30 @@ const multer = require("multer")
 const path = require("path")
 const cors = require("cors")
 const { type } = require("os")
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+
+dotenv.config()
+
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey,
+    },
+    region: bucketRegion
+})
 
 app.use(express.json())
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors())
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Conectado a MongoDB"))
     .catch((error) => console.log("Error al conectarse a MongoDB:", error));
-
-app.use('/images', express.static(path.join(__dirname, 'upload/images')));
 
 // API Creation
 
@@ -31,30 +43,34 @@ app.get("/",(req,res)=>{
 
 // Image Storage Engine
 
-const storage = multer.diskStorage({
-    destination: './upload/images',
-    filename: (req,file,cb)=>{
-        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+const storage = multer.memoryStorage()
 
 const upload = multer({storage:storage})
 
 // Creating Upload Endpoint for images 
 
-/*app.post("/upload",upload.single('ropa'),(req,res)=>{
-    res.json({
-        success:1,
-        image_url:`https://vestiapp-backend.onrender.com/images/${req.file.filename}`,
-    })
-})*/
+app.post("/upload", upload.single('ropa'), async (req, res) => {
+    try {
+        const params = {
+            Bucket: bucketName,
+            Key: req.file.originalname,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+        };
 
-app.post("/upload",upload.single('ropa'), async (req,res)=>{
-    console.log("req.body", req.body)
-    console.log("req.file", req.file)
-    req.file.buffer
-    res.send({})
-})
+        const command = new PutObjectCommand(params);
+        await s3.send(command);
+
+        const imageUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${req.file.originalname}`;
+        res.json({
+            success: 1,
+            image_url: imageUrl,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al subir la imagen" });
+    }
+});
 
 // Schema for Creating Products
 
@@ -95,33 +111,31 @@ const Product = mongoose.model("Product",{
 
 // Creating addproduct Endpoint for our products
 
-app.post('/addproduct',async (req,res)=>{
-    let products = await Product.find({})
-    let id 
-    if(products.length>0){
-        let last_product_array = products.slice(-1)
-        let last_product = last_product_array[0]
-        id = last_product.id+1
+app.post('/addproduct', async (req, res) => {
+    try {
+        let products = await Product.find({});
+        let id = products.length > 0 ? products.slice(-1)[0].id + 1 : 1;
+
+        const product = new Product({
+            id: id,
+            name: req.body.name,
+            image: req.body.image,
+            category: req.body.category,
+            new_price: req.body.new_price,
+            old_price: req.body.old_price,
+        });
+
+        await product.save();
+        console.log("Producto guardado");
+        res.json({
+            success: true,
+            name: req.body.name,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al guardar el producto" });
     }
-    else{
-        id = 1
-    }
-    const product = new Product({
-        id: id,
-        name: req.body.name,
-        image: req.body.image,
-        category: req.body.category,
-        new_price: req.body.new_price,
-        old_price: req.body.old_price,
-    })
-    console.log(product)
-    await product.save()
-    console.log("Guardado")
-    res.json({
-        success: true,
-        name: req.body.name,
-    })
-})
+});
 
 // Creating API For deleting Products 
 
