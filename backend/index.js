@@ -271,37 +271,63 @@ app.get('/popularinwomen', async (req,res) =>{
 
 // Creating endpoint for adding products in cartdata
 
-app.post('/addtocart', fetchUser, async (req,res) =>{
-    console.log("Agregado",req.body.itemId)
-    let userData = await Users.findOne({_id:req.user.id})
-    userData.cartData[req.body.itemId] += 1
-    await Users.findOneAndUpdate({_id:req.user.id},{cartData:userData.cartData})
-    res.send("Agregado")
-})
+app.post('/addtocart', fetchUser, async (req, res) => {
+    try {
+        console.log("Agregado", req.body.itemId);
+        let userData = await Users.findOne({_id: req.user.id});
+        
+        if (!userData.cartData) {
+            userData.cartData = {};
+        }
+
+        if (!userData.cartData[req.body.itemId]) {
+            userData.cartData[req.body.itemId] = 0;
+        }
+
+        userData.cartData[req.body.itemId] += 1;
+        await Users.findOneAndUpdate({_id: req.user.id}, {cartData: userData.cartData});
+        res.send("Agregado");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al agregar al carrito");
+    }
+});
 
 // Creating endpoint to remove product from cartdata
 
-app.post('/removefromcart',fetchUser, async (req,res)=>{
-    console.log("Eliminado",req.body.itemId)
-    let userData = await Users.findOne({_id:req.user.id})
-    if(userData.cartData[req.body.itemId]>0)
-    userData.cartData[req.body.itemId] -= 1
-    await Users.findOneAndUpdate({_id:req.user.id},{cartData:userData.cartData})
-    res.send("Eliminado")
-})
+app.post('/removefromcart', fetchUser, async (req, res) => {
+    try {
+        console.log("Eliminado", req.body.itemId);
+        let userData = await Users.findOne({_id: req.user.id});
+        
+        if (!userData.cartData) {
+            return res.status(400).send("El carrito está vacío");
+        }
+
+        if (userData.cartData[req.body.itemId] > 0) {
+            userData.cartData[req.body.itemId] -= 1;
+            await Users.findOneAndUpdate({_id: req.user.id}, {cartData: userData.cartData});
+        }
+        
+        res.send("Eliminado");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al eliminar del carrito");
+    }
+});
 
 // Creating endpoint to get cartdata
 
 app.post('/getcart', fetchUser, async (req, res) => {
-    console.log("GetCart");
     try {
+        console.log("GetCart");
         let userData = await Users.findOne({_id: req.user.id});
         
         if (!userData) {
             return res.status(404).json({ error: "Usuario no encontrado" });
         }
         
-        res.json(userData.cartData);
+        res.json(userData.cartData || {});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al obtener el carrito" });
