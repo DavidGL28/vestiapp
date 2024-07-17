@@ -3,9 +3,10 @@ E-commerce application for buying and selling clothes
 
 *In the frontend field*
 
-### `npm start`
+### `npm start` 
 
 ### `npm install react-router-dom`
+
 
 *In the backend field*
 
@@ -25,6 +26,9 @@ E-commerce application for buying and selling clothes
 
 ### `npm install @aws-sdk/client-s3`
 
+*para ejecutar*
+### `node index`
+
 *In the admin field*
 
 ### `npm create vite@latest .`
@@ -36,3 +40,7 @@ E-commerce application for buying and selling clothes
 ### `npm install`
 
 ### `npm install react-router-dom`
+
+*para ejecurtar*
+
+### `npm run dev`
