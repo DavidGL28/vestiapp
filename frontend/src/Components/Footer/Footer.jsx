@@ -13,11 +13,11 @@ export const Footer = () => {
         <p>VestiApp</p>
       </div>
       <ul className="footer-links">
-        <li>Compania</li>
-        <li>Productos</li>
-        <li>Oficinas</li>
-        <li>Acerca de</li>
-        <li>Contactar</li>
+        <li><a src="">Compañia</a></li>
+        <li><a src="">Productos</a></li>
+        <li><a src="">Oficinas</a></li>
+        <li><a src="">Acerca de</a></li>
+        <li><a src="">Contactar</a></li>
       </ul>
       <div className="footer-social-icon">
         <div className="footer-icons-container">
