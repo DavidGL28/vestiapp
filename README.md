@@ -3,9 +3,11 @@ E-commerce application for buying and selling clothes
 
 *In the frontend field*
 
-### `npm start` 
-
 ### `npm install react-router-dom`
+
+*para ejecutar*
+
+### `npm start` 
 
 
 *In the backend field*
