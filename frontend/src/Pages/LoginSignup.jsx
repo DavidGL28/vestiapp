@@ -68,11 +68,11 @@ export const LoginSignup = () => {
         </div>
         <button onClick={()=>{state==="Iniciar Sesion"?login():signup()}} >Continuar</button>
         {state==="Registrarse"
-        ?<p className="loginsignup-login">Ya tienes una cuenta?<span onClick={()=>{setState("Iniciar Sesion")}} > Inicia sesion aqui</span></p>:
-        <p className="loginsignup-login">Crear una cuenta?<span onClick={()=>{setState("Registrarse")}} > Pulse aqui</span></p>}
+        ?<p className="loginsignup-login">Ya tienes una cuenta?<span onClick={()=>{setState("Iniciar Sesion")}} > Inicia sesión aquí</span></p>:
+        <p className="loginsignup-login">Crear una cuenta?<span onClick={()=>{setState("Registrarse")}} > Pulse aquí</span></p>}
         <div className="loginsignup-agree">
           <input type="checkbox" name='' id='' />
-          <p>Al continuar, acepto el uso de termnos y condiciones de uso.</p>
+          <p>Al continuar, acepto el uso de terminos y condiciones de uso.</p>
         </div>
       </div>
     </div>

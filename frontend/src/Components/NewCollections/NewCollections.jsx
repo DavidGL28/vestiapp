@@ -14,7 +14,7 @@ export const NewCollections = () => {
   },[])
   return (
     <div className='new-collections'> 
-      <h1>Nuevos catalogos</h1> 
+      <h1>Nuevos catálogos</h1> 
       <hr />
       <div className="collections">
         {new_collection.map((item,i)=>{
