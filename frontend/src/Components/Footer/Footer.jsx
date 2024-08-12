@@ -13,7 +13,7 @@ export const Footer = () => {
         <p>VestiApp</p>
       </div>
       <ul className="footer-links">
-        <li>Compania</li>
+        <li>Compañia</li>
         <li>Productos</li>
         <li>Oficinas</li>
         <li>Acerca de</li>
@@ -21,13 +21,19 @@ export const Footer = () => {
       </ul>
       <div className="footer-social-icon">
         <div className="footer-icons-container">
+          <a href='https://www.instagram.com/'>
             <img src={instagram_icon} alt="" />
+          </a>
         </div>
         <div className="footer-icons-container">
+          <a href='https://mx.pinterest.com/'>
             <img src={pintester_icon} alt="" />
+          </a>
         </div>
         <div className="footer-icons-container">
+          <a href='https://web.whatsapp.com/'> 
             <img src={whatsapp_icon} alt="" />
+          </a>
         </div>
       </div>
       <div className="footer-copyright">
