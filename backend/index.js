@@ -211,7 +211,7 @@ app.post('/signup',async (req,res)=>{
 
 // Creating endpoin for user login
 
-app.post('/login',async (req,res)=>{
+app.post('/login',async (req,res)=>{       
     let user = await Users.findOne({email:req.body.email})
     if(user){
         const passCompare = req.body.password === user.password 
