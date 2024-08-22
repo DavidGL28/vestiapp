@@ -11,6 +11,8 @@ const path = require("path")
 const cors = require("cors")
 const { type } = require("os")
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const bcrypt = require('bcryptjs');
+
 
 dotenv.config()
 
@@ -178,60 +180,70 @@ const Users = mongoose.model('Users',{
     }
 })
 
-// Creating EndPoint for restoring the user
-
-app.post('/signup',async (req,res)=>{
-    let check = await Users.findOne({email:req.body.email})
-    if (check){
-        return res.status(400).json({success:false,errors:"Usuario encontrado con el mismo correo electronico"})
-    }
-    let cart = {}
-    for (let i = 0; i < 300; i++) {
-        cart[i]=0        
-    }
-    const user = new Users({
-        name:req.body.username,
-        email:req.body.email,
-        password:req.body.password,
-        cartData:cart,
-    })
-
-    await user.save()
-
-    const data = {
-        user:{
-            id:user.id
+// Endpoint for signup
+app.post('/signup', async (req, res) => {
+    try {
+        let check = await Users.findOne({ email: req.body.email });
+        if (check) {
+            return res.status(400).json({ success: false, errors: "Usuario encontrado con el mismo correo electrónico" });
         }
-    }
+        
+        // Crear carrito inicial
+        let cart = {};
+        for (let i = 0; i < 300; i++) {
+            cart[i] = 0;
+        }
 
-    const token = jwt.sign(data,'secret_ecom')
-    res.json({success:true,token})
+        // Generar salt y hashear la contraseña
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        console.log("Contraseña Encriptada:", hashedPassword);
+        // Crear el usuario con la contraseña encriptada
+        const user = new Users({
+            name: req.body.username,
+            email: req.body.email,
+            password: hashedPassword, // Aquí se guarda la contraseña encriptada
+            cartData: cart,
+        });
 
-})
+        await user.save();
 
-// Creating endpoin for user login
-
-app.post('/login',async (req,res)=>{
-    let user = await Users.findOne({email:req.body.email})
-    if(user){
-        const passCompare = req.body.password === user.password 
-        if(passCompare){
-            const data = {
-                user:{
-                    id:user.id
-                }
+        const data = {
+            user: {
+                id: user.id
             }
-            const token = jwt.sign(data,'secret_ecom')
-            res.json({success:true,token})
-        }
-        else{
-            res.json({success:false,errors:"Contraseña Incorrecta"})
-        }
+        };
+
+        const token = jwt.sign(data, process.env.JWT_SECRET || 'secret_ecom');
+        res.json({ success: true, token });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, errors: "Error al registrarse" });
     }
-    else{
-        res.json({success:false,errors:"Correo Electronico Incorrecto"})
+});
+
+
+// Endpoint for login
+app.post('/login', async (req, res) => {
+    let user = await Users.findOne({ email: req.body.email });
+    if (user) {
+        const passCompare = await bcrypt.compare(req.body.password, user.password); // Comparar la contraseña encriptada
+        if (passCompare) {
+            const data = {
+                user: {
+                    id: user.id
+                }
+            };
+            const token = jwt.sign(data, process.env.JWT_SECRET || 'secret_ecom'); // Usar una variable de entorno para la clave secreta
+            res.json({ success: true, token });
+        } else {
+            res.json({ success: false, errors: "Contraseña Incorrecta" });
+        }
+    } else {
+        res.json({ success: false, errors: "Correo Electronico Incorrecto" });
     }
-})
+});
 
 // Creating endpoint for newcollection data 
 
@@ -343,3 +355,4 @@ app.listen(port,(error)=>{
         console.log("Error : "+error)
     }
 })
+
