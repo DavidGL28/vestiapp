@@ -28,6 +28,8 @@ E-commerce application for buying and selling clothes
 
 ### `npm install @aws-sdk/client-s3`
 
+### `npm install bcrypt.js`
+
 *para ejecutar*
 ### `node index`
 
